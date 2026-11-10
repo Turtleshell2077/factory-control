@@ -62,6 +62,7 @@ jobs:
     name: Деплой в Docker Swarm и проверка
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       packages: read
@@ -85,10 +86,13 @@ jobs:
       - name: Деплой стека
         run: docker stack deploy -c docker-compose.yaml --with-registry-auth $STACK_NAME
 
+      # проверки идут из временного контейнера, подключённого к сети front-net
+      # (сеть объявлена attachable), запросы проходят через proxy, как из браузера
       - name: Ожидание запуска сервисов
         run: |
-          for i in $(seq 1 30); do
-            if curl -sf http://localhost/api/health; then
+          for i in $(seq 1 40); do
+            if docker run --rm --network ${STACK_NAME}_front-net $IMAGE_PREFIX/proxy:latest \
+                 wget -qO- -T 5 http://proxy/api/health; then
               echo
               echo "Система запущена"
               exit 0
@@ -97,22 +101,27 @@ jobs:
             sleep 5
           done
           docker service ls
+          docker stack ps $STACK_NAME --no-trunc
           docker service logs ${STACK_NAME}_backend --tail 50
+          docker service logs ${STACK_NAME}_proxy --tail 50
           exit 1
 
       - name: Проверка работы системы
         run: |
           docker service ls
-          curl -sf http://localhost/ | grep "Панель управления цехом"
-          curl -sf http://localhost/api/machines
-          echo
-          curl -sf -X POST -H "Content-Type: application/json" \
-               -d '{"action":"speed","value":55}' http://localhost/api/machines/1/command
-          echo
-          sleep 6
-          curl -sf http://localhost/api/events | grep "Скорость изменена на 55"
-          curl -sf http://localhost/api/machines | grep '"speed":55'
-          echo "Команда дошла до оборудования, телеметрия обновилась"
+          docker run --rm --network ${STACK_NAME}_front-net $IMAGE_PREFIX/proxy:latest sh -c '
+            set -e
+            wget -qO- -T 5 http://proxy/ | grep "Панель управления цехом"
+            wget -qO- -T 5 http://proxy/api/machines
+            echo
+            wget -qO- -T 5 --header "Content-Type: application/json" \
+                 --post-data "{\"action\":\"speed\",\"value\":55}" http://proxy/api/machines/1/command
+            echo
+            sleep 6
+            wget -qO- -T 5 http://proxy/api/events | grep -o "Скорость изменена на 55"
+            wget -qO- -T 5 http://proxy/api/machines | grep -o "\"speed\":55"
+            echo "Команда дошла до оборудования, телеметрия обновилась"
+          '
 
       - name: Удаление стека
         if: always()
