@@ -6,6 +6,7 @@ COPY src ./src
 RUN mvn -B -q package -DskipTests
 
 FROM eclipse-temurin:25-jre-alpine
+LABEL org.opencontainers.image.source=https://github.com/Turtleshell2077/factory-control
 WORKDIR /app
 RUN addgroup -S app && adduser -S app -G app
 COPY --from=build /app/target/emulator.jar app.jar

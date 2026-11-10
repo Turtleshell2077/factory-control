@@ -8,6 +8,7 @@ RUN mvn -B -q package -DskipTests
 
 # этап 2: в итоговый образ попадает только JRE и готовый jar
 FROM eclipse-temurin:25-jre-alpine
+LABEL org.opencontainers.image.source=https://github.com/Turtleshell2077/factory-control
 WORKDIR /app
 RUN addgroup -S app && adduser -S app -G app
 COPY --from=build /app/target/backend.jar app.jar
