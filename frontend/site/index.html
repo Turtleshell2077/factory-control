@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления цехом</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Панель управления цехом</h1>
+            <p class="subtitle">Облачная платформа дистанционного управления производственными процессами</p>
+        </div>
+        <div id="connection" class="connection">Подключение...</div>
+    </header>
+
+    <main>
+        <section class="summary">
+            <div class="card"><span class="label">Работает</span><span id="sum-running" class="value">0</span></div>
+            <div class="card"><span class="label">Остановлено</span><span id="sum-stopped" class="value">0</span></div>
+            <div class="card"><span class="label">Авария</span><span id="sum-alarm" class="value alarm-text">0</span></div>
+            <div class="card"><span class="label">Выпущено деталей</span><span id="sum-produced" class="value">0</span></div>
+        </section>
+
+        <div id="message" class="message"></div>
+
+        <h2>Оборудование</h2>
+        <section id="machines" class="machines"></section>
+
+        <h2>Журнал событий</h2>
+        <table class="journal">
+            <thead>
+                <tr><th>Время</th><th>Оборудование</th><th>Источник</th><th>Событие</th></tr>
+            </thead>
+            <tbody id="events"></tbody>
+        </table>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

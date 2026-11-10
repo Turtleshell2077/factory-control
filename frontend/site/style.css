@@ -1,0 +1,271 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eef1f5;
+    color: #1f2933;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 32px;
+    background: #1f2a37;
+    color: #fff;
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    color: #a9b6c5;
+    font-size: 14px;
+}
+
+.connection {
+    padding: 6px 14px;
+    border-radius: 16px;
+    background: #4b5563;
+    font-size: 14px;
+}
+
+.connection.online {
+    background: #15803d;
+}
+
+.connection.offline {
+    background: #b91c1c;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 32px 40px;
+}
+
+h2 {
+    margin: 28px 0 12px;
+    font-size: 19px;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.card {
+    padding: 14px 18px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+    display: block;
+    color: #6b7785;
+    font-size: 14px;
+}
+
+.value {
+    display: block;
+    margin-top: 4px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.alarm-text {
+    color: #c62828;
+}
+
+.message {
+    display: none;
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.message.ok {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.message.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.machines {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.machine {
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    border-left: 6px solid #9aa5b1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.machine.running {
+    border-left-color: #16a34a;
+}
+
+.machine.alarm {
+    border-left-color: #dc2626;
+    background: #fff5f5;
+}
+
+.machine-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.machine-name {
+    font-weight: 600;
+}
+
+.machine-type {
+    color: #6b7785;
+    font-size: 13px;
+}
+
+.state {
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #9aa5b1;
+    color: #fff;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.state.running {
+    background: #16a34a;
+}
+
+.state.alarm {
+    background: #dc2626;
+}
+
+.param {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.bar {
+    height: 6px;
+    background: #e5e9ef;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.bar div {
+    height: 100%;
+    background: #3b82f6;
+    transition: width 0.5s;
+}
+
+.bar div.warm {
+    background: #f59e0b;
+}
+
+.bar div.hot {
+    background: #dc2626;
+}
+
+.buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+button {
+    padding: 7px 10px;
+    border: none;
+    border-radius: 6px;
+    background: #3b5b8c;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.btn-start {
+    background: #16a34a;
+}
+
+.btn-stop {
+    background: #6b7280;
+}
+
+.btn-reset {
+    background: #d97706;
+}
+
+.speed-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.speed-row input {
+    width: 64px;
+    padding: 5px;
+    border: 1px solid #c5ccd6;
+    border-radius: 6px;
+}
+
+.updated {
+    margin-top: 10px;
+    color: #8a96a3;
+    font-size: 12px;
+}
+
+.journal {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.journal th {
+    padding: 10px 12px;
+    background: #e2e8f0;
+    text-align: left;
+}
+
+.journal td {
+    padding: 8px 12px;
+    border-top: 1px solid #edf0f4;
+}
+
+.src-operator {
+    color: #1d4ed8;
+}
+
+.src-machine {
+    color: #b45309;
+}

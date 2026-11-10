@@ -1,0 +1,110 @@
+# IMAGE_PREFIX задаётся в CI (ghcr.io/<владелец>/factory-control), локально образы называются factory-control/...
+services:
+  proxy:
+    image: ${IMAGE_PREFIX:-factory-control}/proxy:latest
+    build: ./proxy
+    ports:
+      - "80:80"
+    networks:
+      - front-net
+    depends_on:
+      - frontend
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  frontend:
+    image: ${IMAGE_PREFIX:-factory-control}/frontend:latest
+    build: ./frontend
+    networks:
+      - front-net
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  backend:
+    image: ${IMAGE_PREFIX:-factory-control}/backend:latest
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/factory
+      DB_USER: factory
+      DB_PASSWORD: factory123
+      MQTT_URL: tcp://broker:1883
+    networks:
+      - front-net
+      - back-net
+    depends_on:
+      - db
+      - broker
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8080/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+  emulator:
+    image: ${IMAGE_PREFIX:-factory-control}/emulator:latest
+    build: ./emulator
+    environment:
+      MQTT_URL: tcp://broker:1883
+    networks:
+      - back-net
+    depends_on:
+      - broker
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  db:
+    image: ${IMAGE_PREFIX:-factory-control}/db:latest
+    build: ./db
+    environment:
+      POSTGRES_DB: factory
+      POSTGRES_USER: factory
+      POSTGRES_PASSWORD: factory123
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - back-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U factory -d factory"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  broker:
+    image: ${IMAGE_PREFIX:-factory-control}/broker:latest
+    build: ./broker
+    networks:
+      - back-net
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  front-net:
+    driver: overlay
+    attachable: true
+  back-net:
+    driver: overlay
+    attachable: true
+
+volumes:
+  db-data:
