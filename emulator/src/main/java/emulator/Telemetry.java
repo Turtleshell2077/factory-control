@@ -1,5 +1,6 @@
 package emulator;
 
+// то, что эмулятор раз в 2 секунды публикует в factory/{id}/telemetry
 public class Telemetry {
     private String state;
     private double temperature;

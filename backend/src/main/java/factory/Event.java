@@ -1,5 +1,6 @@
 package factory;
 
+// запись журнала событий для ответа /api/events
 public class Event {
     private int id;
     private String time;
@@ -13,15 +14,5 @@ public class Event {
         this.machine = machine;
         this.source = source;
         this.message = message;
-    }
-
-    public String getMachine(){
-        return machine;
-    }
-    public String getSource(){
-        return source;
-    }
-    public String getMessage(){
-        return message;
     }
 }

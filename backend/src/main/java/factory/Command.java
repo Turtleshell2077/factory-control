@@ -1,5 +1,6 @@
 package factory;
 
+// команда оператора, приходит из браузера в виде {"action":"speed","value":70}
 public class Command {
     public static final int MIN_SPEED = 0;
     public static final int MAX_SPEED = 100;
@@ -10,13 +11,6 @@ public class Command {
     public Command(String action, int value){
         this.action = action;
         this.value = value;
-    }
-
-    public String getAction(){
-        return action;
-    }
-    public int getValue(){
-        return value;
     }
 
     public boolean isValid(){

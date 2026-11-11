@@ -1,5 +1,6 @@
 package factory;
 
+// данные, которые оборудование присылает в топик factory/{id}/telemetry
 public class Telemetry {
     private String state;
     private double temperature;

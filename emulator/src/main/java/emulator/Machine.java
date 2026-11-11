@@ -29,9 +29,6 @@ public class Machine {
     public synchronized String getState(){
         return state;
     }
-    public synchronized double getTemperature(){
-        return temperature;
-    }
     public synchronized int getSpeed(){
         return speed;
     }

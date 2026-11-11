@@ -1,5 +1,6 @@
 package factory;
 
+// данные об оборудовании для ответа /api/machines (Gson переводит поля в JSON)
 public class Machine {
     private int id;
     private String name;
@@ -19,24 +20,5 @@ public class Machine {
         this.speed = speed;
         this.produced = produced;
         this.updatedAt = updatedAt;
-    }
-
-    public int getId(){
-        return id;
-    }
-    public String getName(){
-        return name;
-    }
-    public String getState(){
-        return state;
-    }
-    public double getTemperature(){
-        return temperature;
-    }
-    public int getSpeed(){
-        return speed;
-    }
-    public int getProduced(){
-        return produced;
     }
 }
