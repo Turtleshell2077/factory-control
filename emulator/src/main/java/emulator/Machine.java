@@ -80,6 +80,10 @@ public class Machine {
                 state = "STOPPED";
                 return "Авария сброшена, оборудование готово к запуску";
             case "speed":
+                // сервер проверяет скорость сам, но команда может прийти в брокер и в обход него
+                if (value < 0 || value > 100){
+                    return "Недопустимая скорость: " + value + " %";
+                }
                 speed = value;
                 return "Скорость изменена на " + value + " %";
             default:

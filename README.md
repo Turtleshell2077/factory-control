@@ -62,6 +62,10 @@ docker stack deploy --resolve-image never -c docker-compose.yaml factory
 docker service ls
 ```
 
+Если стек уже запущен, после пересборки сервисы нужно перезапустить, например
+`docker service update --force factory_backend`: образы называются так же (`:latest`), и Swarm сам не
+видит, что они изменились. `deploy.bat` делает это автоматически.
+
 Остановка: `stop.bat` или `docker stack rm factory`.
 
 Масштабирование, например, до трёх копий сервера управления:
